@@ -1,6 +1,7 @@
 # Minecraft 抗攻擊 Proxy 設置
 
-這個專案提供了一個自動化腳本，用於快速設置 Minecraft 伺服器的抗 DDoS 代理。透過使用 HAProxy 作為前端代理，可以有效保護您的 Minecraft 伺服器免受直接攻擊，同時保留玩家的真實 IP 地址。
+這個專案提供了一個自動化腳本，用於快速設置 Minecraft 伺服器的抗 DDoS 代理。
+透過使用 HAProxy 作為前端代理，可以有效保護您的 Minecraft 伺服器免受直接攻擊，同時保留玩家的真實 IP 地址。
 
 ## 功能特點
 
