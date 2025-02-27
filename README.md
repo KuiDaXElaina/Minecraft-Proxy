@@ -32,7 +32,7 @@
 ### 方法 1：直接從 GitHub 運行
 
 ```bash
-bash <(curl -s https://raw.githubusercontent.com/YOUR_USERNAME/minecraft-proxy/main/minecraft-proxy-setup.sh)
+bash <(curl -s https://raw.githubusercontent.com/KuiDaXElaina/minecraft-proxy/main/minecraft-proxy-setup.sh)
 ```
 
 ### 方法 2：下載後運行
@@ -40,7 +40,7 @@ bash <(curl -s https://raw.githubusercontent.com/YOUR_USERNAME/minecraft-proxy/m
 1. 下載腳本
 
 ```bash
-wget https://raw.githubusercontent.com/YOUR_USERNAME/minecraft-proxy/main/minecraft-proxy-setup.sh
+wget https://raw.githubusercontent.com/KuiDaXElaina/minecraft-proxy/main/minecraft-proxy-setup.sh
 ```
 
 2. 添加執行權限
