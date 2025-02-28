@@ -78,6 +78,7 @@ echo -e "- 後端伺服器: ${BACKEND_HOST}"
 echo -e "${YELLOW}配置防火牆...${NC}"
 ufw allow ssh
 ufw allow $EXPOSED_PORT
+ufw allow 8404
 echo "y" | ufw enable 2>/dev/null || echo -e "${YELLOW}UFW 可能已啟用或不可用${NC}"
 echo -e "${GREEN}防火牆已配置${NC}"
 
@@ -100,7 +101,7 @@ fi
 echo -e "${YELLOW}正在安裝與配置 HAProxy...${NC}"
 apt install -y haproxy
 
-# 配置 HAProxy
+# 配置 HAProxy - 修正後的配置
 cat > /etc/haproxy/haproxy.cfg << EOF
 global
     log /dev/log local0
@@ -135,20 +136,21 @@ frontend minecraft
     bind *:${EXPOSED_PORT}
     default_backend minecraft_backend
     
-    # 基本 DDoS 防護
-    tcp-request connection reject if { src_conn_rate(Minecraft) ge 10 }
-    tcp-request connection track-sc1 src table Minecraft
+    # 基本 DDoS 防護 - 修正後的配置
+    stick-table type ip size 100k expire 30s store conn_rate(3s)
+    tcp-request connection reject if { src_conn_rate gt 10 }
+    tcp-request connection track-sc0 src
 
 backend minecraft_backend
     server minecraft ${BACKEND_HOST} send-proxy
     
-# 規則表
+# 統計頁面 - 修正後的配置
 listen stats
     bind *:8404
+    mode http
     stats enable
     stats uri /stats
     stats refresh 10s
-    stats admin if LOCALHOST
 EOF
 
 # 優化系統限制
@@ -166,6 +168,9 @@ if systemctl is-active --quiet haproxy; then
     echo -e "${GREEN}HAProxy 已成功安裝並啟動${NC}"
 else
     echo -e "${RED}HAProxy 安裝失敗，請檢查錯誤信息${NC}"
+    echo -e "${YELLOW}執行以下命令查看詳細錯誤：${NC}"
+    echo -e "${YELLOW}systemctl status haproxy${NC}"
+    echo -e "${YELLOW}haproxy -c -f /etc/haproxy/haproxy.cfg${NC}"
     exit 1
 fi
 
